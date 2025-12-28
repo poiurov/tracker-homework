@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ skill.name }}</title>
+</head>
+<body>
+
+<h1>{{ skill.name }}</h1>
+
+<p>{{ skill.description }}</p>
+
+<h2>Цели</h2>
+
+{% if skill.goals %}
+    <ul>
+        {% for goal in skill.goals %}
+            <li>
+                {{ goal.text }}
+                {% if goal.goal_description %}
+                    — {{ goal.goal_description }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Целей пока нет</p>
+{% endif %}
+
+<hr>
+
+<a href="/">← Назад</a>
+
+</body>
+</html>
