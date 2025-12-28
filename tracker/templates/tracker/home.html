@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Skill Tracker</title>
+</head>
+<body>
+
+<h1>Skill Tracker</h1>
+
+{% for skill_id, skill in skills.items %}
+  <hr>
+  <h2>{{ loh }}</h2>
+  <p>{{ skill.description }}</p>
+  <p><a href="URL">Страница навыка</a></p>
+
+<p>
+  Выполнено целей:
+  <strong>{{ skill.done_count }} / {{ skill.total_count }}</strong>
+</p>
+
+{% endfor %}
+
+</body>
+</html>
