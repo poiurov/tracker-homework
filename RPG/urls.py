@@ -22,5 +22,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home),
     path("skill/<int:skill_id>/", skill_detail)
-
 ]

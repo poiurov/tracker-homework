@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+        <style>
+        .goal {
+            padding: 6px 10px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+        }
+
+        .goal-done {
+            background: #e6ffe6;
+            color: #2e7d32;
+            text-decoration: line-through;
+        }
+
+        .goal-not-done {
+            background: #fff4e5;
+            color: #a15c00;
+        }
+    </style>
     <meta charset="UTF-8">
     <title>{{ skill.name }}</title>
 </head>
@@ -13,18 +31,18 @@
 <h2>Цели</h2>
 
 {% if skill.goals %}
-    <ul>
-        {% for goal in skill.goals %}
-            <li>
-                {{ goal.text }}
-                {% if goal.goal_description %}
-                    — {{ goal.goal_description }}
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+  <ul>
+    {% for goal in skill.goals %}
+      <li class="goal {% if goal.done %}goal-done{% else %}goal-not-done{% endif %}">
+        {{ goal.text }}
+        {% if goal.goal_description %}
+          — {{ goal.goal_description }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
 {% else %}
-    <p>Целей пока нет</p>
+  <p>Целей пока нет</p>
 {% endif %}
 
 <hr>
