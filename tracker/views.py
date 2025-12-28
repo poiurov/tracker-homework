@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import Http404
+
 
 def home(request):
     skills_with_stats = {}
@@ -16,6 +18,16 @@ def home(request):
 
     return render(request, "tracker/home.html", {
         "skills": skills_with_stats,
+    })
+
+def skill_detail(request, skill_id):
+    skill = SKILLS.get(skill_id)
+
+    if skill is None:
+        raise Http404("Skill not found")
+
+    return render(request, "tracker/skill_detail.html", {
+        "skill": skill,
     })
 
 SKILLS = {
