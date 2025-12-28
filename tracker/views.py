@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-loh = "Лох"
-
 def home(request):
     skills_with_stats = {}
 
@@ -18,7 +16,6 @@ def home(request):
 
     return render(request, "tracker/home.html", {
         "skills": skills_with_stats,
-        "loh": loh
     })
 
 SKILLS = {
