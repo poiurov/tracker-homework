@@ -23,17 +23,17 @@ SKILLS = {
  'name': 'Python',
  'description': 'Master Python programming',
  'goals': [
- {'id': 1, 'text': 'Изучить основы Python', 'done': True},
- {'id': 2, 'text': 'Изучить основы словарей', 'done': False},
+ {'id': 1, 'text': 'Изучить основы Python', 'goal_description': 'Прочти книгу', 'done': True},
+ {'id': 2, 'text': 'Изучить основы словарей', 'goal_description': 'Посмотри видео урок', 'done': False},
  ]
  },
  2: {
  'name': 'Django',
  'description': 'Master Django framework',
  'goals': [
- {'id': 1, 'text': 'Изучить архитектуру Django', 'done': True},
- {'id': 2, 'text': 'Изучить модуль views', 'done': True},
- {'id': 3, 'text': 'Изучить модуль urls', 'done': False},
+ {'id': 1, 'text': 'Изучить архитектуру Django', 'goal_description': 'Посмотри видео урок', 'done': True},
+ {'id': 2, 'text': 'Изучить модуль views', 'goal_description': 'Посмотри видео урок', 'done': True},
+ {'id': 3, 'text': 'Изучить модуль urls', 'goal_description': 'Посмотри видео урок', 'done': False},
  ]
  }
 }
