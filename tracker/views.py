@@ -31,6 +31,33 @@ def skill_detail(request, skill_id):
         "skill": skill,
     })
 
+def goals_check(request):
+    done_goals = []
+    not_done_goals = []
+
+    for skill_id, skill in SKILLS.items():
+        skill_name = skill["name"]
+
+        for goal in skill["goals"]:
+            goal_data = {
+                "text": goal["text"],
+                "skill_id": skill_id,
+                "skill_name": skill_name,
+            }
+
+            if goal["done"]:
+                done_goals.append(goal_data)
+            else:
+                not_done_goals.append(goal_data)
+
+    return render(
+        request,
+        "tracker/goals_view.html",
+        {
+            "done_goals": done_goals,
+            "not_done_goals": not_done_goals,
+        }
+    )
 
 SKILLS = {
     1: {

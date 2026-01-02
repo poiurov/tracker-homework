@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from tracker.views import home, skill_detail
+from tracker.views import home, skill_detail, goals_check
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home),
-    path("skill/<int:skill_id>/", skill_detail)
+    path("skill/<int:skill_id>/", skill_detail),
+    path("goals_view/", goals_check, name="goals"),
 ]

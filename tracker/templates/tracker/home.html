@@ -21,9 +21,12 @@
 {% endif %}
 
 <p>
-    Выполнено целей:
-    <strong>{{ skill.done_count }} / {{ skill.total_count }}</strong>
+    <a href="{% url 'goals' %}">
+        Выполнено целей:
+        <strong>{{ skill.done_count }} / {{ skill.total_count }}</strong>
+    </a>
 </p>
+
 
 {% endfor %}
 

@@ -1,10 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Цели</title>
+    <title>Все цели</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 24px;
+        }
+
+        h1 {
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            margin-top: 32px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 8px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+        }
+
+        .skill {
+            font-size: 14px;
+            color: #666;
+        }
+
+        a {
+            text-decoration: none;
+            color: #1a73e8;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .empty {
+            color: #999;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
+
+<h1>Все цели</h1>
+
+<!-- ВЫПОЛНЕННЫЕ -->
+<h2>Выполненные</h2>
+
+{% if done_goals %}
+<ul>
+    {% for goal in done_goals %}
+    <li>
+        <div>{{ goal.text }}</div>
+        <div class="skill">
+            Навык:
+            <a href="/skill/{{ goal.skill_id }}/">
+                {{ goal.skill_name }}
+            </a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="empty">Нет выполненных целей</p>
+{% endif %}
+
+<!-- НЕВЫПОЛНЕННЫЕ -->
+<h2>Невыполненные</h2>
+
+{% if not_done_goals %}
+<ul>
+    {% for goal in not_done_goals %}
+    <li>
+        <div>{{ goal.text }}</div>
+        <div class="skill">
+            Навык:
+            <a href="/skill/{{ goal.skill_id }}/">
+                {{ goal.skill_name }}
+            </a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="empty">Нет невыполненных целей</p>
+{% endif %}
 
 </body>
 </html>
