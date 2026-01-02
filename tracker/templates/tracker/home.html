@@ -9,23 +9,21 @@
 <h1>Skill Tracker</h1>
 
 {% for skill_id, skill in skills.items %}
-    <hr>
+<hr>
 
-    <h2>{{ skill.name }}</h2>
-    <p>{{ skill.description }}</p>
+<h2><a href="/skill/{{ skill_id }}/">{{ skill.name }}</a></h2>
+<p>{{ skill.description }}</p>
 
-    <p><a href="/skill/{{ skill_id }}/">Страница навыка</a></p>
+{% if skill.goals %}
+<p>
+    {{ skill.goals.0.text }} — {{ skill.goals.0.goal_description }}
+</p>
+{% endif %}
 
-    {% if skill.goals %}
-    <p>
-        {{ skill.goals.0.text }} — {{ skill.goals.0.goal_description }}
-    </p>
-    {% endif %}
-
-    <p>
-        Выполнено целей:
-        <strong>{{ skill.done_count }} / {{ skill.total_count }}</strong>
-    </p>
+<p>
+    Выполнено целей:
+    <strong>{{ skill.done_count }} / {{ skill.total_count }}</strong>
+</p>
 
 {% endfor %}
 
