@@ -16,11 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from tracker.views import home, skill_detail, goals_check
+from tracker.views import home, skill_detail, goals_check, mark_goal_done, mark_goal_undone
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', home),
+    path("admin/", admin.site.urls),
+    path("", home),
     path("skill/<int:skill_id>/", skill_detail),
     path("goals_view/", goals_check, name="goals"),
+    path(
+        "goal/<int:skill_id>/<int:goal_id>/done/",
+        mark_goal_done,
+        name="goal_done",
+    ),
+    path(
+        "goal/<int:skill_id>/<int:goal_id>/done/",
+        mark_goal_undone,
+        name="goal_undone",
+    ),
 ]

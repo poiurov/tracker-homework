@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import Http404
 
@@ -40,6 +40,7 @@ def goals_check(request):
 
         for goal in skill["goals"]:
             goal_data = {
+                "id": goal["id"],
                 "text": goal["text"],
                 "skill_id": skill_id,
                 "skill_name": skill_name,
@@ -58,6 +59,20 @@ def goals_check(request):
             "not_done_goals": not_done_goals,
         }
     )
+
+def mark_goal_done(request, skill_id, goal_id):
+    skill = SKILLS.get(skill_id)
+
+    if not skill:
+        raise Http404("Skill not found")
+
+    for goal in skill["goals"]:
+        if goal["id"] == goal_id:
+            goal["done"] = True
+            break
+
+    return redirect("goals")
+
 
 SKILLS = {
     1: {

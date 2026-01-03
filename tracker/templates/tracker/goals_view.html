@@ -77,6 +77,7 @@
 <p class="empty">Нет выполненных целей</p>
 {% endif %}
 
+
 <!-- НЕВЫПОЛНЕННЫЕ -->
 <h2>Невыполненные</h2>
 
@@ -84,14 +85,19 @@
 <ul>
     {% for goal in not_done_goals %}
     <li>
-        <div>{{ goal.text }}</div>
-        <div class="skill">
-            Навык:
-            <a href="/skill/{{ goal.skill_id }}/">
-                {{ goal.skill_name }}
-            </a>
-        </div>
-    </li>
+    <div>{{ goal.text }}</div>
+
+    <div class="skill">
+        Навык:
+        <a href="/skill/{{ goal.skill_id }}/">
+            {{ goal.skill_name }}
+        </a>
+    </div>
+
+    <a href="{% url 'goal_done' goal.skill_id goal.id %}">
+        ✔ Отметить выполненной
+    </a>
+</li>
     {% endfor %}
 </ul>
 {% else %}
