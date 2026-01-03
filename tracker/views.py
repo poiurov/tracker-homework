@@ -81,6 +81,7 @@ def goals_create(request, skill_id):
 
     if request.method == "POST":
         text = request.POST.get("text")
+        description = request.POST.get("description")
 
         if text and len(text.strip()) >= 3:
             new_goal = {
@@ -93,6 +94,21 @@ def goals_create(request, skill_id):
             skill["goals"].append(new_goal)
 
             return redirect("skill_detail", skill_id=skill_id)
+
+        else:
+            # ❗ ОШИБКА ВВОДА → ПОВТОРНЫЙ РЕНДЕР
+            return render(
+                request,
+                "tracker/goal_create.html",
+                {
+                    "skill": skill,
+                    "skill_id": skill_id,
+                    "error": "Цель должна содержать минимум 3 символа",
+                    "text": text,
+                    "description": description,
+                }
+            )
+
 
     return render(
         request,

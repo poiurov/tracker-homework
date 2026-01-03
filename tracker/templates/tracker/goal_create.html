@@ -14,12 +14,23 @@
 
     <label>
         Цель:
-        <input type="text" name="text" required>
-        <br>Не менее 3-х символов<br>
+        <input
+            type="text"
+            name="text"
+            required
+            value="{{ text|default:'' }}">
+
         <br><br>
+
         Описание:
         <input type="text" name="Description">
     </label>
+
+    {% if error %}
+    <div style="color: red; margin-top: 6px;">
+        {{ error }}
+    </div>
+{% endif %}
 
     <br><br>
 
