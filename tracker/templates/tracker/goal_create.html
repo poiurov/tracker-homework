@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<h1>Новая цель</h1>
+
+<p>
+    Навык:
+    <strong>
+        <a href="{% url 'skill_detail' skill_id %}">
+            {{ skill.name }}
+        </a>
+    </strong>
+</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>
+        Цель:
+        <input type="text" name="text" required>
+        <br>Не менее 3-х символов<br>
+        <br><br>
+        Описание:
+        <input type="text" name="Description">
+    </label>
+
+    <br><br>
+
+    <button type="submit">Создать</button>
+</form>

@@ -21,9 +21,11 @@
 {% endif %}
 
 <p>
-    <a href="{% url 'goals' %}">
-        Выполнено целей:
-        <strong>{{ skill.done_count }} / {{ skill.total_count }}</strong>
+    Выполнено целей:
+    <strong>{{ skill.done_count }} / {{ skill.total_count }}</strong>
+
+    <a href="{% url 'goal_create' skill_id %}" style="margin-left: 8px;">
+        +
     </a>
 </p>
 

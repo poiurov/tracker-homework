@@ -70,8 +70,38 @@ def mark_goal_done(request, skill_id, goal_id):
         if goal["id"] == goal_id:
             goal["done"] = True
             break
+        return redirect("goals")
 
-    return redirect("goals")
+
+def goals_create(request, skill_id):
+    skill = SKILLS.get(skill_id)
+
+    if not skill:
+        raise Http404("Skill not found")
+
+    if request.method == "POST":
+        text = request.POST.get("text")
+
+        if text and len(text.strip()) >= 3:
+            new_goal = {
+                "id": len(skill["goals"]) + 1,
+                "text": text,
+                "done": False,
+                "description": text,
+            }
+
+            skill["goals"].append(new_goal)
+
+            return redirect("skill_detail", skill_id=skill_id)
+
+    return render(
+        request,
+        "tracker/goal_create.html",
+        {
+            "skill": skill,
+            "skill_id": skill_id,
+        }
+    )
 
 def mark_goal_undone(request, skill_id, goal_id):
     skill = SKILLS.get(skill_id)
