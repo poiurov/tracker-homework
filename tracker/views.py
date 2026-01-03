@@ -73,6 +73,18 @@ def mark_goal_done(request, skill_id, goal_id):
 
     return redirect("goals")
 
+def mark_goal_undone(request, skill_id, goal_id):
+    skill = SKILLS.get(skill_id)
+
+    if not skill:
+        raise Http404("Skill not found")
+
+    for goal in skill["goals"]:
+        if goal["id"] == goal_id:
+            goal["done"] = False
+            break
+
+    return redirect("goals")
 
 SKILLS = {
     1: {

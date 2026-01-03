@@ -29,7 +29,7 @@ urlpatterns = [
         name="goal_done",
     ),
     path(
-        "goal/<int:skill_id>/<int:goal_id>/done/",
+        "goal/<int:skill_id>/<int:goal_id>/undone/",
         mark_goal_undone,
         name="goal_undone",
     ),

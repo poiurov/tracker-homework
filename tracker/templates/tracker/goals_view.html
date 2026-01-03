@@ -63,14 +63,19 @@
 <ul>
     {% for goal in done_goals %}
     <li>
-        <div>{{ goal.text }}</div>
-        <div class="skill">
-            Навык:
-            <a href="/skill/{{ goal.skill_id }}/">
-                {{ goal.skill_name }}
-            </a>
-        </div>
-    </li>
+    <div>{{ goal.text }}</div>
+
+    <div class="skill">
+        Навык:
+        <a href="/skill/{{ goal.skill_id }}/">
+            {{ goal.skill_name }}
+        </a>
+    </div>
+
+    <a href="{% url 'goal_undone' goal.skill_id goal.id %}">
+        ↩ Снять выполнение
+    </a>
+</li>
     {% endfor %}
 </ul>
 {% else %}
