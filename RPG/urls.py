@@ -43,3 +43,5 @@ urlpatterns = [
         name="goal_undone",
     ),
 ]
+
+#name = это ссылка для backend кода, а не ссылка как URL для пользователя

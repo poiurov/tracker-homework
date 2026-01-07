@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import Http404
 
+#render - собери текущую страницу
+#reddirect - после выполнения переправь нас в ...
 
 def home(request):
     skills_with_stats = {}
@@ -37,13 +39,16 @@ def goals_check(request):
 
     for skill_id, skill in SKILLS.items():
         skill_name = skill["name"]
+        skill_description = skill["description"]
 
+        # цикл - пройдись по целям в skill, выполненные помести вверх, невыполненные вниз
         for goal in skill["goals"]:
             goal_data = {
                 "id": goal["id"],
                 "text": goal["text"],
                 "skill_id": skill_id,
                 "skill_name": skill_name,
+                "skill_description": skill_description
             }
 
             if goal["done"]:
@@ -66,10 +71,17 @@ def mark_goal_done(request, skill_id, goal_id):
     if not skill:
         raise Http404("Skill not found")
 
+    goal_found = False
+
     for goal in skill["goals"]:
         if goal["id"] == goal_id:
             goal["done"] = True
+            goal_found = True
             break
+
+        if not goal_found:
+            raise Http404("Goal not found")
+
         return redirect("goals")
 
 
@@ -88,7 +100,7 @@ def goals_create(request, skill_id):
                 "id": len(skill["goals"]) + 1,
                 "text": text,
                 "done": False,
-                "description": text,
+                "description": description,
             }
 
             skill["goals"].append(new_goal)
@@ -125,11 +137,16 @@ def mark_goal_undone(request, skill_id, goal_id):
     if not skill:
         raise Http404("Skill not found")
 
+    goal_found = False
+
     for goal in skill["goals"]:
         if goal["id"] == goal_id:
             goal["done"] = False
+            goal_found = True
             break
 
+        if not goal_found:
+            raise Http404("Goal not found")
     return redirect("goals")
 
 SKILLS = {
