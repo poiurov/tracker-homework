@@ -79,11 +79,9 @@ def mark_goal_done(request, skill_id, goal_id):
             goal_found = True
             break
 
-        if not goal_found:
-            raise Http404("Goal not found")
-
-        return redirect("goals")
-
+    if not goal_found:
+        raise Http404("Goal not found")
+    return redirect("goals")
 
 def goals_create(request, skill_id):
     skill = SKILLS.get(skill_id)
