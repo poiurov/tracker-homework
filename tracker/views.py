@@ -33,14 +33,18 @@ def skill_detail(request, skill_id):
         "skill": skill,
     })
 
-def goal_detail(request, goal_id):
-    goal = SKILLS.get(goal_id)
+def goal_detail(request, skill_id, goal_id):
+    skill = SKILLS.get(skill_id)
+    goals = skill['goals']
+    goal = goals[goal_id]
 
     if goal is None:
         raise Http404("Goal not found")
 
     return render(request, "tracker/goal_detail.html", {
         "goal": goal,
+        "goals": goals,  # ← ПЕРЕДАЁМ ВСЕ goals
+        "goal_description": goal["goal_description"],
     })
 
 def goals_check(request):

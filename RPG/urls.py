@@ -22,7 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", home),
     path("skill/<int:skill_id>/", skill_detail, name="skill_detail",),
-    path("goal/<int:goal_id>/", goal_detail, name="goal_detail",),
+    path("skill/<int:skill_id>/goal/<int:goal_id>/", goal_detail, name="goal_detail",),
     path("goals_view/", goals_check, name="goals"),
     path("skill/<int:skill_id>/goals_new/", goals_create, name="goal_create",),
     path("goal/<int:skill_id>/<int:goal_id>/done/", mark_goal_done, name="goal_done",),
