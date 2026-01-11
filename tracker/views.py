@@ -33,6 +33,16 @@ def skill_detail(request, skill_id):
         "skill": skill,
     })
 
+def goal_detail(request, goal_id):
+    goal = SKILLS.get(goal_id)
+
+    if goal is None:
+        raise Http404("Goal not found")
+
+    return render(request, "tracker/goal_detail.html", {
+        "goal": goal,
+    })
+
 def goals_check(request):
     done_goals = []
     not_done_goals = []
@@ -163,6 +173,15 @@ SKILLS = {
             {'id': 1, 'text': 'Изучить архитектуру Django', 'goal_description': 'Посмотри видео урок', 'done': True},
             {'id': 2, 'text': 'Изучить модуль views', 'goal_description': 'Посмотри видео урок', 'done': True},
             {'id': 3, 'text': 'Изучить модуль urls', 'goal_description': 'Посмотри видео урок', 'done': False},
+        ]
+    },
+    3: {
+        'name': 'Guitar',
+        'description': 'Master guitar',
+        'goals': [
+            {'id': 1, 'text': 'Видео курс', 'goal_description': 'Посмотри видео урок', 'done': False},
+            {'id': 2, 'text': 'Мелодии', 'goal_description': 'Сыграть 3 мелодии', 'done': True},
+            {'id': 3, 'text': 'Бой', 'goal_description': 'Выучить бой', 'done': False},
         ]
     }
 }
