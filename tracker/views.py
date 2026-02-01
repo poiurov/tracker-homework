@@ -31,12 +31,13 @@ def skill_detail(request, skill_id):
 
     return render(request, "tracker/skill_detail.html", {
         "skill": skill,
+        "skill_id": skill_id,  # ← вот эту строку добавить
     })
 
 def goal_detail(request, skill_id, goal_id):
     skill = SKILLS.get(skill_id)
     goals = skill['goals']
-    goal = goals[goal_id]
+    goal = goals[goal_id-1]
 
     if goal is None:
         raise Http404("Goal not found")
@@ -174,9 +175,9 @@ SKILLS = {
         'name': 'Django',
         'description': 'Master Django framework',
         'goals': [
-            {'id': 1, 'text': 'Изучить архитектуру Django', 'goal_description': 'Посмотри видео урок', 'done': True},
-            {'id': 2, 'text': 'Изучить модуль views', 'goal_description': 'Посмотри видео урок', 'done': True},
-            {'id': 3, 'text': 'Изучить модуль urls', 'goal_description': 'Посмотри видео урок', 'done': False},
+            {'id': 1, 'text': 'Изучить архитектуру Django', 'goal_description': 'Посмотри видео урок 1', 'done': True},
+            {'id': 2, 'text': 'Изучить модуль views', 'goal_description': 'Посмотри видео урок 2', 'done': True},
+            {'id': 3, 'text': 'Изучить модуль urls', 'goal_description': 'Посмотри видео урок 3', 'done': False},
         ]
     },
     3: {

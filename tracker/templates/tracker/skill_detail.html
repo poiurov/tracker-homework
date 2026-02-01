@@ -31,13 +31,29 @@
 <h2>Цели</h2>
 
 {% if skill.goals %}
-  <ul>
+  <ul style="list-style: none; padding: 0;">
     {% for goal in skill.goals %}
-      <li class="goal {% if goal.done %}goal-done{% else %}goal-not-done{% endif %}">
-        {{ goal.text }}
-        {% if goal.goal_description %}
-          — {{ goal.goal_description }}
-        {% endif %}
+      <li style="margin: 12px 0; padding: 12px; border-radius: 8px;
+                 background: {% if goal.done %}#e8f5e9{% else %}#fff3e0{% endif %};
+                 border: 1px solid {% if goal.done %}#a5d6a7{% else %}#ffe0b2{% endif %};">
+
+        <a href="{% url 'goal_detail' skill_id=skill_id goal_id=goal.id %}"
+           style="text-decoration: none; color: inherit; display: block;">
+
+          <strong style="{% if goal.done %}text-decoration: line-through; color: #555;{% endif %}">
+            {{ goal.text }}
+          </strong>
+
+          <br>
+          <span style="color: #666; font-size: 0.95em;">
+            — {{ goal.goal_description|default:"Нет описания" }}
+          </span>
+
+          {% if goal.done %}
+            <span style="float: right; color: #2e7d32; font-weight: bold;">✓ Выполнено</span>
+          {% endif %}
+
+        </a>
       </li>
     {% endfor %}
   </ul>
@@ -46,7 +62,6 @@
 {% endif %}
 
 <hr>
-
 <a href="/">← Назад</a>
 
 </body>
