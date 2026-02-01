@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Описание цели</title>
+    <style>
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: system-ui, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 <body>
-
-<p>{{ goal.goal_description }}</p>
-
+    <h1>{{ goal.text }}</h1>
+    <p>{{ goal.goal_description|default:"Нет описания" }}</p>
 </body>
 </html>
