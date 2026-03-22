@@ -1,6 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.http import Http404
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
+from .models import Skill, Goal
 
 #render - собери текущую страницу
 #reddirect - после выполнения переправь нас в ...
@@ -22,16 +25,12 @@ def home(request):
         "skills": skills_with_stats,
     })
 
-
 def skill_detail(request, skill_id):
-    skill = SKILLS.get(skill_id)
-
-    if skill is None:
-        raise Http404("Skill not found")
+    skill = get_object_or_404(Skill, id=skill_id)
 
     return render(request, "tracker/skill_detail.html", {
         "skill": skill,
-        "skill_id": skill_id,  # ← вот эту строку добавить
+        "skill_id": skill_id,
     })
 
 def goal_detail(request, skill_id, goal_id):
@@ -99,29 +98,25 @@ def mark_goal_done(request, skill_id, goal_id):
     return redirect("goals")
 
 def goals_create(request, skill_id):
-    skill = SKILLS.get(skill_id)
-
-    if not skill:
-        raise Http404("Skill not found")
+    skill = get_object_or_404(Skill, id=skill_id)
 
     if request.method == "POST":
-        text = request.POST.get("text")
-        description = request.POST.get("description")
+        text = request.POST.get("text", "").strip()
+        description = request.POST.get("description", "").strip()
 
-        if text and len(text.strip()) >= 3:
-            new_goal = {
-                "id": len(skill["goals"]) + 1,
-                "text": text,
-                "done": False,
-                "description": description,
-            }
-
-            skill["goals"].append(new_goal)
+        if text and len(text) >= 3:
+            goal = Goal(
+                text=text,
+                description=description,
+                skill=skill,
+                user=request.user,
+                done=False,
+            )
+            goal.save()
 
             return redirect("skill_detail", skill_id=skill_id)
 
         else:
-            # ❗ ОШИБКА ВВОДА → ПОВТОРНЫЙ РЕНДЕР
             return render(
                 request,
                 "tracker/goal_create.html",
@@ -133,7 +128,6 @@ def goals_create(request, skill_id):
                     "description": description,
                 }
             )
-
 
     return render(
         request,

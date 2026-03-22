@@ -1,5 +1,5 @@
 """
-URL configuration for RPG project.
+URL configuration for RPGproj project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.http import HttpResponse
 from tracker.views import home, skill_detail, goals_check, mark_goal_done, mark_goal_undone, goals_create, goal_detail
 
 urlpatterns = [
