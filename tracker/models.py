@@ -1,55 +1,41 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
+
 
 
 class Skill(models.Model):
-    name = models.CharField(max_length=100)  # например "Python", "Английский", "Физуха"
-
-    # можно добавить: description, level, user и т.д. позже
-
-    def __str__(self):
-        return self.name
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="goals",
+        null=True,
+        blank=True
+    )
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    rank = models.CharField(max_length=10, blank=True)
 
 
 class Goal(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        User,
         on_delete=models.CASCADE,
-        related_name='goals',
-        verbose_name='владелец'
+        related_name="skills",
+        null=True,
+        blank=True
     )
-
     skill = models.ForeignKey(
         Skill,
         on_delete=models.CASCADE,
-        related_name='goals',
-        verbose_name='навык'
+        related_name="goals"
     )
-
-    text = models.CharField(
-        max_length=200,
-        verbose_name='основной текст цели'
-    )
-
-    description = models.TextField(
-        blank=True,
-        verbose_name='подробное описание'
-    )
-
-    done = models.BooleanField(
-        default=False,
-        verbose_name='выполнено'
-    )
-
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='создана'
-    )
+    text = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    done = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = 'цель'
-        verbose_name_plural = 'цели'
-        ordering = ['-created_at']
+        ordering = ['-id']
 
     def __str__(self):
         return f"{self.text} ({self.skill})"

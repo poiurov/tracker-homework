@@ -86,11 +86,10 @@
                 </tr>
             </thead>
             <tbody>
-                {% for skill_id, skill in skills.items %}
-                <tr>
-                    <td>S</td> <!-- можно сделать динамическим -->
+                {% for skill in skills %}                <tr>
+                    <td>{{ skill.rank }}</td> <!-- можно сделать динамическим -->
                     <td>
-                        <a href="{% url 'skill_detail' skill_id %}" style="color: #e2e8f0; text-decoration: none;">
+                        <a href="{% url 'skill_detail' skill.id %}" style="color: #e2e8f0; text-decoration: none;">
                             {{ skill.name }}
                         </a>
                     </td>
@@ -99,7 +98,7 @@
                         <strong>{{ skill.done_count }} / {{ skill.total_count }}</strong>
                     </td>
                     <td>
-                        <a href="{% url 'goal_create' skill_id %}" class="action-btn">+</a>
+                        <a href="{% url 'goal_create' skill.id %}" class="action-btn">+</a>
                         <a href="{% url 'goals' %}" class="action-btn">список</a>
                     </td>
                 </tr>

@@ -9,17 +9,22 @@ from .models import Skill, Goal
 #reddirect - после выполнения переправь нас в ...
 
 def home(request):
-    skills_with_stats = {}
+    skills = Skill.objects.all()
+    skills_with_stats = []
 
-    for skill_id, skill in SKILLS.items():
-        done_count = sum(goal["done"] for goal in skill['goals'])
-        total_count = len(skill['goals'])
+    for skill in skills:
+        goals = skill.goals.all()
+        done_count = goals.filter(done=True).count()
+        total_count = goals.count()
 
-        skills_with_stats[skill_id] = {
-            **skill,
-            'done_count': done_count,
-            'total_count': total_count,
-        }
+        skills_with_stats.append({
+            "id": skill.id,
+            "name": skill.name,
+            "description": skill.description,
+            "rank": skill.rank,
+            "done_count": done_count,
+            "total_count": total_count,
+        })
 
     return render(request, "tracker/home.html", {
         "skills": skills_with_stats,
@@ -109,9 +114,12 @@ def goals_create(request, skill_id):
                 text=text,
                 description=description,
                 skill=skill,
-                user=request.user,
                 done=False,
             )
+
+            if request.user.is_authenticated:
+                goal.user = request.user
+
             goal.save()
 
             return redirect("skill_detail", skill_id=skill_id)
@@ -155,32 +163,3 @@ def mark_goal_undone(request, skill_id, goal_id):
         if not goal_found:
             raise Http404("Goal not found")
     return redirect("goals")
-
-SKILLS = {
-    1: {
-        'name': 'Python',
-        'description': 'Master Python programming',
-        'goals': [
-            {'id': 1, 'text': 'Изучить основы Python', 'goal_description': 'Прочти книгу', 'done': True},
-            {'id': 2, 'text': 'Изучить основы словарей', 'goal_description': 'Посмотри видео урок', 'done': False},
-        ]
-    },
-    2: {
-        'name': 'Django',
-        'description': 'Master Django framework',
-        'goals': [
-            {'id': 1, 'text': 'Изучить архитектуру Django', 'goal_description': 'Посмотри видео урок 1', 'done': True},
-            {'id': 2, 'text': 'Изучить модуль views', 'goal_description': 'Посмотри видео урок 2', 'done': True},
-            {'id': 3, 'text': 'Изучить модуль urls', 'goal_description': 'Посмотри видео урок 3', 'done': False},
-        ]
-    },
-    3: {
-        'name': 'Guitar',
-        'description': 'Master guitar',
-        'goals': [
-            {'id': 1, 'text': 'Видео курс', 'goal_description': 'Посмотри видео урок', 'done': False},
-            {'id': 2, 'text': 'Мелодии', 'goal_description': 'Сыграть 3 мелодии', 'done': True},
-            {'id': 3, 'text': 'Бой', 'goal_description': 'Выучить бой', 'done': False},
-        ]
-    }
-}
