@@ -1,8 +1,5 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404 #Частые операции с html
 from django.http import Http404
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
 from .models import Skill, Goal
 
 #render - собери текущую страницу
@@ -21,6 +18,7 @@ def home(request):
             "id": skill.id,
             "name": skill.name,
             "description": skill.description,
+            "level": skill.level,
             "rank": skill.rank,
             "done_count": done_count,
             "total_count": total_count,
@@ -38,69 +36,59 @@ def skill_detail(request, skill_id):
         "skill_id": skill_id,
     })
 
-def goal_detail(request, skill_id, goal_id):
-    skill = SKILLS.get(skill_id)
-    goals = skill['goals']
-    goal = goals[goal_id-1]
+def goal_detail(request, skill_id, goal_id,):
 
-    if goal is None:
-        raise Http404("Goal not found")
+    skill = get_object_or_404(Skill, id=skill_id)
+    goal = get_object_or_404(Goal, id=goal_id, skill=skill)
 
     return render(request, "tracker/goal_detail.html", {
         "goal": goal,
-        "goals": goals,  # ← ПЕРЕДАЁМ ВСЕ goals
-        "goal_description": goal["goal_description"],
+        "skill": skill,
     })
 
-def goals_check(request):
+def goals_check(request, skill_id):
+    skill = get_object_or_404(Skill, id=skill_id)
+
     done_goals = []
     not_done_goals = []
 
-    for skill_id, skill in SKILLS.items():
-        skill_name = skill["name"]
-        skill_description = skill["description"]
-
-        # цикл - пройдись по целям в skill, выполненные помести вверх, невыполненные вниз
-        for goal in skill["goals"]:
-            goal_data = {
-                "id": goal["id"],
-                "text": goal["text"],
-                "skill_id": skill_id,
-                "skill_name": skill_name,
-                "skill_description": skill_description
-            }
-
-            if goal["done"]:
-                done_goals.append(goal_data)
-            else:
-                not_done_goals.append(goal_data)
-
-    return render(
-        request,
-        "tracker/goals_view.html",
-        {
-            "done_goals": done_goals,
-            "not_done_goals": not_done_goals,
+    for goal in skill.goals.all():
+        goal_data = {
+            "id": goal.id,
+            "text": goal.text,
+            "skill_id": skill.id,
+            "skill_name": skill.name,
+            "skill_description": skill.description,
         }
-    )
+
+        if goal.done:
+            done_goals.append(goal_data)
+        else:
+            not_done_goals.append(goal_data)
+
+    return render(request, "tracker/goals_check.html", {
+        "skill": skill,
+        "done_goals": done_goals,
+        "not_done_goals": not_done_goals,
+    })
 
 def mark_goal_done(request, skill_id, goal_id):
-    skill = SKILLS.get(skill_id)
+    skill = get_object_or_404(Skill, id=skill_id)
+    goal = get_object_or_404(Goal, id=goal_id, skill=skill)
 
-    if not skill:
-        raise Http404("Skill not found")
+    goal.done = True
+    goal.save()
 
-    goal_found = False
+    return redirect("goals_check", skill_id=skill.id)
 
-    for goal in skill["goals"]:
-        if goal["id"] == goal_id:
-            goal["done"] = True
-            goal_found = True
-            break
+def mark_goal_undone(request, skill_id, goal_id):
+    skill = get_object_or_404(Skill, id=skill_id)
+    goal = get_object_or_404(Goal, id=goal_id, skill=skill)
 
-    if not goal_found:
-        raise Http404("Goal not found")
-    return redirect("goals")
+    goal.done = False
+    goal.save()
+
+    return redirect("goals_check", skill_id=skill.id)
 
 def goals_create(request, skill_id):
     skill = get_object_or_404(Skill, id=skill_id)
@@ -145,21 +133,3 @@ def goals_create(request, skill_id):
             "skill_id": skill_id,
         }
     )
-
-def mark_goal_undone(request, skill_id, goal_id):
-    skill = SKILLS.get(skill_id)
-
-    if not skill:
-        raise Http404("Skill not found")
-
-    goal_found = False
-
-    for goal in skill["goals"]:
-        if goal["id"] == goal_id:
-            goal["done"] = False
-            goal_found = True
-            break
-
-        if not goal_found:
-            raise Http404("Goal not found")
-    return redirect("goals")

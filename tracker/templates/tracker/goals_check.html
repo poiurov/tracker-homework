@@ -33,12 +33,12 @@
 
     <div class="skill">
         Навык:
-        <a href="/skill/{{ goal.skill_id }}/">
+        <a href="/skill/{{ goal.skill_id }}/"  style="color: #38bdf8;">
             {{ goal.skill_description }}
         </a>
     </div>
 
-    <a href="{% url 'goal_undone' goal.skill_id goal.id %}">
+    <a href="{% url 'goal_undone' goal.skill_id goal.id %}"  style="color: #22c55e;">
         ↩ Снять выполнение
     </a>
 </li>
@@ -60,12 +60,12 @@
 
     <div class="skill">
         Навык:
-        <a href="/skill/{{ goal.skill_id }}/">
+        <a href="/skill/{{ goal.skill_id }}/" style="color: #38bdf8;">
             {{ goal.skill_name }}
         </a>
     </div>
 
-    <a href="{% url 'goal_done' goal.skill_id goal.id %}">
+    <a href="{% url 'goal_done' goal.skill_id goal.id %}" style="color: #22c55e;">
         ✔ Отметить выполненной
     </a>
 </li>

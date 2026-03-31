@@ -15,6 +15,7 @@ class Skill(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     rank = models.CharField(max_length=10, blank=True)
+    level = models.IntegerField(default=1)
 
 
 class Goal(models.Model):

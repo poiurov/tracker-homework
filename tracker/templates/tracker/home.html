@@ -93,13 +93,13 @@
                             {{ skill.name }}
                         </a>
                     </td>
-                    <td>—</td> <!-- если уровня нет — можно убрать или добавить -->
+                    <td>{{ skill.level }}</td>
                     <td>
                         <strong>{{ skill.done_count }} / {{ skill.total_count }}</strong>
                     </td>
                     <td>
                         <a href="{% url 'goal_create' skill.id %}" class="action-btn">+</a>
-                        <a href="{% url 'goals' %}" class="action-btn">список</a>
+                        <a href="{% url 'goals_check' skill.id %}" class="action-btn">список</a>
                     </td>
                 </tr>
                 {% endfor %}
