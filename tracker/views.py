@@ -28,6 +28,7 @@ def home(request):
         "skills": skills_with_stats,
     })
 
+
 def skill_detail(request, skill_id):
     skill = get_object_or_404(Skill, id=skill_id)
 
@@ -35,6 +36,22 @@ def skill_detail(request, skill_id):
         "skill": skill,
         "skill_id": skill_id,
     })
+
+
+def skill_edit(request, skill_id):
+    skill = get_object_or_404(Skill, id=skill_id)
+
+    if request.method == "POST":
+        name = request.POST.get("name", "").strip()
+
+        if name:
+            skill.name = name
+            skill.save()
+
+        return redirect("skill_detail", skill_id=skill.id)
+
+    return redirect("skill_detail", skill_id=skill.id)
+
 
 def goal_detail(request, skill_id, goal_id,):
 
@@ -87,6 +104,15 @@ def mark_goal_undone(request, skill_id, goal_id):
 
     goal.done = False
     goal.save()
+
+    return redirect("goals_check", skill_id=skill.id)
+
+def goal_delete(request, skill_id, goal_id):
+    skill = get_object_or_404(Skill, id=skill_id)
+    goal = get_object_or_404(Goal, id=goal_id, skill=skill)
+
+    if request.method == "POST":
+        goal.delete()
 
     return redirect("goals_check", skill_id=skill.id)
 
