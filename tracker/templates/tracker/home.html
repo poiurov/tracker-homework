@@ -81,7 +81,7 @@
                     <th>Ранг</th>
                     <th>Название</th>
                     <th>Уровень</th>
-                    <th>Опыт</th>
+                    <th>Прогресс целей</th>
                     <th>Действия</th>
                 </tr>
             </thead>
@@ -99,12 +99,16 @@
                     </td>
                     <td>
                         <a href="{% url 'goal_create' skill.id %}" class="action-btn">+</a>
-                        <a href="{% url 'goals_check' skill.id %}" class="action-btn">список</a>
+                        <a href="{% url 'skill_detail' skill.id %}" class="action-btn">список</a>
                     </td>
                 </tr>
                 {% endfor %}
+
             </tbody>
         </table>
+        <a href="{% url 'show_undone_goals' %}" class="action-btn">
+            Показать невыполненные цели
+        </a>
     </div>
 </body>
 </html>

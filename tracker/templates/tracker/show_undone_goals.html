@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Описание цели</title>
+    <style>
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: system-ui, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Все невыполненные цели</h1>
+
+    {% if goals %}
+        {% for goal in goals %}
+            <div class="goal-card">
+                <div class="goal-text">{{ goal.text }}</div>
+
+                <div class="goal-description">
+                    {{ goal.description|default:"Нет описания" }}
+                </div>
+
+                <div>
+                    Навык:
+                    <a class="skill-link" href="{% url 'skill_detail' goal.skill.id %}">
+                        {{ goal.skill.name }}
+                    </a>
+                </div>
+
+                <a class="done-link" href="{% url 'goal_done' goal.skill.id goal.id %}">
+                    ✓ Отметить выполненной
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty">Нет невыполненных целей</p>
+    {% endif %}
+</body>
+</html>

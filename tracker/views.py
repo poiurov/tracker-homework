@@ -58,7 +58,7 @@ def goal_detail(request, skill_id, goal_id,):
     skill = get_object_or_404(Skill, id=skill_id)
     goal = get_object_or_404(Goal, id=goal_id, skill=skill)
 
-    return render(request, "tracker/goal_detail.html", {
+    return render(request, "tracker/show_undone_goals.html", {
         "goal": goal,
         "skill": skill,
     })
@@ -96,7 +96,7 @@ def mark_goal_done(request, skill_id, goal_id):
     goal.done = True
     goal.save()
 
-    return redirect("goals_check", skill_id=skill.id)
+    return redirect("show_undone_goals")
 
 def mark_goal_undone(request, skill_id, goal_id):
     skill = get_object_or_404(Skill, id=skill_id)
@@ -106,6 +106,14 @@ def mark_goal_undone(request, skill_id, goal_id):
     goal.save()
 
     return redirect("goals_check", skill_id=skill.id)
+
+def show_undone_goals(request):
+    goals = Goal.objects.filter(done=False).select_related("skill")
+
+    return render(request, "tracker/show_undone_goals.html", {
+        "goals": goals,
+    })
+
 
 def goal_delete(request, skill_id, goal_id):
     skill = get_object_or_404(Skill, id=skill_id)

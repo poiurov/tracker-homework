@@ -27,6 +27,7 @@ from tracker.views import (
     goal_detail,
     skill_edit,
     goal_delete,
+    show_undone_goals
 )
 
 urlpatterns = [
@@ -36,7 +37,7 @@ urlpatterns = [
     path("skill/<int:skill_id>/goal/<int:goal_id>/", goal_detail, name="goal_detail"),
     path("skill/<int:skill_id>/goals_new/", goals_create, name="goal_create"),
     path("skill/<int:skill_id>/edit/", skill_edit, name="skill_edit"),
-    path("goals_check/", goals_check, name="goals_check"),
+    path("show_undone_goals/", show_undone_goals, name="show_undone_goals"),
     path("goals/<int:skill_id>/", goals_check, name="goals_check"),
     path("goals/<int:skill_id>/<int:goal_id>/delete/", goal_delete, name="goal_delete"),
     path("goal/<int:skill_id>/<int:goal_id>/done/", mark_goal_done, name="goal_done"),
