@@ -18,8 +18,8 @@ def home(request):
             "id": skill.id,
             "name": skill.name,
             "description": skill.description,
-            "level": skill.level,
             "rank": skill.rank,
+            "level": skill.level,
             "done_count": done_count,
             "total_count": total_count,
         })
@@ -32,9 +32,20 @@ def home(request):
 def skill_detail(request, skill_id):
     skill = get_object_or_404(Skill, id=skill_id)
 
+    done_goals = []
+    undone_goals = []
+
+    for goal in skill.goals.all():
+        if goal.done:
+            done_goals.append(goal)
+        else:
+            undone_goals.append(goal)
+
     return render(request, "tracker/skill_detail.html", {
         "skill": skill,
         "skill_id": skill_id,
+        "done_goals": done_goals,
+        "not_done_goals": undone_goals,
     })
 
 

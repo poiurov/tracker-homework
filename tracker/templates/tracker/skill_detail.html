@@ -82,35 +82,64 @@ z-index: 1000;
 
 <h2>Цели</h2>
 
-{% if skill.goals.all %}
+<h3>Невыполненные</h3>
+
+{% if not_done_goals %}
 <ul style="list-style: none; padding: 0;">
-{% for goal in skill.goals.all %}
-      <li style="margin: 12px 0; padding: 12px; border-radius: 8px;
-                 background: {% if goal.done %}#e8f5e9{% else %}#fff3e0{% endif %};
-                 border: 1px solid {% if goal.done %}#a5d6a7{% else %}#ffe0b2{% endif %};">
+    {% for goal in not_done_goals %}
+    <li style="margin: 12px 0; padding: 12px; border-radius: 8px;
+               background: #fff3e0;
+               border: 1px solid #ffe0b2;">
 
         <a href="{% url 'goal_detail' skill_id=skill_id goal_id=goal.id %}"
            style="text-decoration: none; color: #888; display: block;">
 
-          <strong style="{% if goal.done %}text-decoration: line-through; color: #555;{% endif %}">
-            {{ goal.text }}
-          </strong>
+            <strong>
+                {{ goal.text }}
+            </strong>
 
-          <br>
-          <span style="color: #666; font-size: 0.95em;">
-            — {{ goal.goal_description|default:"Нет описания" }}
-          </span>
-
-          {% if goal.done %}
-            <span style="float: right; color: #2e7d32; font-weight: bold;">✓ Выполнено</span>
-          {% endif %}
+            <br>
+            <span style="color: #666; font-size: 0.95em;">
+                — {{ goal.description|default:"Нет описания" }}
+            </span>
 
         </a>
-      </li>
+    </li>
     {% endfor %}
-  </ul>
+</ul>
 {% else %}
-  <p>Целей пока нет</p>
+<p>Невыполненных целей нет</p>
+{% endif %}
+
+<h3>Выполненные</h3>
+
+{% if done_goals %}
+<ul style="list-style: none; padding: 0;">
+    {% for goal in done_goals %}
+    <li style="margin: 12px 0; padding: 12px; border-radius: 8px;
+               background: #e8f5e9;
+               border: 1px solid #a5d6a7;">
+
+        <a href="{% url 'goal_detail' skill_id=skill_id goal_id=goal.id %}"
+           style="text-decoration: none; color: #888; display: block;">
+
+            <strong style="text-decoration: line-through; color: #555;">
+                {{ goal.text }}
+            </strong>
+
+            <br>
+            <span style="color: #666; font-size: 0.95em;">
+                — {{ goal.description|default:"Нет описания" }}
+            </span>
+
+            <span style="float: right; color: #2e7d32; font-weight: bold;">✓ Выполнено</span>
+
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Выполненных целей нет</p>
 {% endif %}
 
 <hr>
