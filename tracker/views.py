@@ -34,18 +34,23 @@ def skill_detail(request, skill_id):
 
     done_goals = []
     undone_goals = []
+    archive_goals = []
 
     for goal in skill.goals.all():
-        if goal.done:
+        if goal.archived:
+            archive_goals.append(goal)
+        elif goal.done:
             done_goals.append(goal)
         else:
             undone_goals.append(goal)
+
 
     return render(request, "tracker/skill_detail.html", {
         "skill": skill,
         "skill_id": skill_id,
         "done_goals": done_goals,
         "not_done_goals": undone_goals,
+        "archive_goals": archive_goals,
     })
 
 
@@ -117,6 +122,16 @@ def mark_goal_undone(request, skill_id, goal_id):
     goal.save()
 
     return redirect("goals_check", skill_id=skill.id)
+
+def mark_goal_archived(request, skill_id, goal_id):
+    skill = get_object_or_404(Skill, id=skill_id)
+    goal = get_object_or_404(Goal, id=goal_id, skill=skill)
+
+    if request.method == "POST":
+        goal.archived = True
+        goal.save()
+
+    return redirect("skill_detail", skill_id=skill.id)
 
 def show_undone_goals(request):
     goals = Goal.objects.filter(done=False).select_related("skill")

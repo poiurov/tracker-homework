@@ -123,24 +123,72 @@ z-index: 1000;
         <a href="{% url 'goal_detail' skill_id=skill_id goal_id=goal.id %}"
            style="text-decoration: none; color: #888; display: block;">
 
+            <span style="float: right; color: #2e7d32; font-weight: bold;">
+                ✓ Выполнено
+            </span>
+
             <strong style="text-decoration: line-through; color: #555;">
                 {{ goal.text }}
             </strong>
 
             <br>
+
             <span style="color: #666; font-size: 0.95em;">
                 — {{ goal.description|default:"Нет описания" }}
             </span>
-
-            <span style="float: right; color: #2e7d32; font-weight: bold;">✓ Выполнено</span>
-
         </a>
+
+        <form action="{% url 'mark_goal_archived' skill_id=skill_id goal_id=goal.id %}" method="post" style="margin-top: 10px;">
+            {% csrf_token %}
+            <button type="submit" style="background: #334155; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer;">
+                В архив
+            </button>
+        </form>
+
     </li>
     {% endfor %}
 </ul>
 {% else %}
 <p>Выполненных целей нет</p>
 {% endif %}
+
+<h3>Архив</h3>
+
+<details style="margin-top: 20px;">
+<summary style="
+cursor: pointer;
+font-size: 18px;
+font-weight: bold;
+margin-bottom: 10px;
+">
+Архив ({{ archive_goals|length }})
+</summary>
+
+{% if archive_goals %}
+<ul style="list-style: none; padding: 0;">
+    {% for goal in archive_goals %}
+    <li style="margin: 12px 0; padding: 12px; border-radius: 8px;
+               background: #cbd5e1;
+               border: 1px solid #94a3b8;">
+
+        <strong style="color: #334155;">
+            {{ goal.text }}
+        </strong>
+
+        <br>
+
+        <span style="color: #475569; font-size: 0.95em;">
+            — {{ goal.description|default:"Нет описания" }}
+        </span>
+
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>В архиве ничего нет</p>
+{% endif %}
+
+</details>
 
 <hr>
 <a href="/">← Назад</a>

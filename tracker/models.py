@@ -34,6 +34,7 @@ class Goal(models.Model):
     text = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     done = models.BooleanField(default=False)
+    archived = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-id']

@@ -27,7 +27,8 @@ from tracker.views import (
     goal_detail,
     skill_edit,
     goal_delete,
-    show_undone_goals
+    show_undone_goals,
+    mark_goal_archived
 )
 
 urlpatterns = [
@@ -42,6 +43,7 @@ urlpatterns = [
     path("goals/<int:skill_id>/<int:goal_id>/delete/", goal_delete, name="goal_delete"),
     path("goal/<int:skill_id>/<int:goal_id>/done/", mark_goal_done, name="goal_done"),
     path("goal/<int:skill_id>/<int:goal_id>/undone/", mark_goal_undone, name="goal_undone"),
+    path("skill/<int:skill_id>/goal/<int:goal_id>/archive/", mark_goal_archived, name="mark_goal_archived"),
 ]
 
 #name = это ссылка для backend кода, а не ссылка как URL для пользователя
