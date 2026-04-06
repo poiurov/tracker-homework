@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-
+from django.utils.text import slugify
 
 
 class Skill(models.Model):
@@ -16,7 +16,11 @@ class Skill(models.Model):
     description = models.TextField(blank=True)
     rank = models.CharField(max_length=10, blank=True)
     level = models.IntegerField(default=1)
+    slug = models.SlugField(default='', null=False)
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Skill, self).save(*args, **kwargs)
 
 class Goal(models.Model):
     user = models.ForeignKey(

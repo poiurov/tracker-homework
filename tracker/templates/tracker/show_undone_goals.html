@@ -32,12 +32,12 @@
 
                 <div>
                     Навык:
-                    <a class="skill-link" href="{% url 'skill_detail' goal.skill.id %}">
+                    <a class="skill-link" href="{% url 'skill_detail' goal.skill.slug %}">
                         {{ goal.skill.name }}
                     </a>
                 </div>
 
-                <a class="done-link" href="{% url 'goal_done' goal.skill.id goal.id %}">
+                <a class="done-link" href="{% url 'goal_done' goal.skill.slug goal.id %}">
                     ✓ Отметить выполненной
                 </a>
             </div>

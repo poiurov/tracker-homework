@@ -22,6 +22,7 @@ def home(request):
             "level": skill.level,
             "done_count": done_count,
             "total_count": total_count,
+            "slug": skill.slug,
         })
 
     return render(request, "tracker/home.html", {
@@ -29,8 +30,8 @@ def home(request):
     })
 
 
-def skill_detail(request, skill_id):
-    skill = get_object_or_404(Skill, id=skill_id)
+def skill_detail(request, skill_slug:str):
+    skill = get_object_or_404(Skill, slug=skill_slug)
 
     done_goals = []
     undone_goals = []
@@ -47,15 +48,15 @@ def skill_detail(request, skill_id):
 
     return render(request, "tracker/skill_detail.html", {
         "skill": skill,
-        "skill_id": skill_id,
+        "skill_slug": skill.slug,
         "done_goals": done_goals,
         "not_done_goals": undone_goals,
         "archive_goals": archive_goals,
     })
 
 
-def skill_edit(request, skill_id):
-    skill = get_object_or_404(Skill, id=skill_id)
+def skill_edit(request, skill_slug:str):
+    skill = get_object_or_404(Skill, slug=skill_slug)
 
     if request.method == "POST":
         name = request.POST.get("name", "").strip()
@@ -64,14 +65,14 @@ def skill_edit(request, skill_id):
             skill.name = name
             skill.save()
 
-        return redirect("skill_detail", skill_id=skill.id)
+        return redirect("skill_detail", slug=skill_slug)
 
-    return redirect("skill_detail", skill_id=skill.id)
+    return redirect("skill_detail", slug=skill_slug)
 
 
-def goal_detail(request, skill_id, goal_id,):
+def goal_detail(request, skill_slug:str, goal_id,):
 
-    skill = get_object_or_404(Skill, id=skill_id)
+    skill = get_object_or_404(Skill, slug=skill_slug)
     goal = get_object_or_404(Goal, id=goal_id, skill=skill)
 
     return render(request, "tracker/show_undone_goals.html", {
@@ -79,8 +80,8 @@ def goal_detail(request, skill_id, goal_id,):
         "skill": skill,
     })
 
-def goals_check(request, skill_id):
-    skill = get_object_or_404(Skill, id=skill_id)
+def goals_check(request, skill_slug:str):
+    skill = get_object_or_404(Skill, slug=skill_slug)
 
     done_goals = []
     not_done_goals = []
@@ -89,7 +90,7 @@ def goals_check(request, skill_id):
         goal_data = {
             "id": goal.id,
             "text": goal.text,
-            "skill_id": skill.id,
+            "skill_slug": skill.slug,
             "skill_name": skill.name,
             "skill_description": skill.description,
         }
@@ -105,8 +106,8 @@ def goals_check(request, skill_id):
         "not_done_goals": not_done_goals,
     })
 
-def mark_goal_done(request, skill_id, goal_id):
-    skill = get_object_or_404(Skill, id=skill_id)
+def mark_goal_done(request, skill_slug:str, goal_id):
+    skill = get_object_or_404(Skill, slug=skill_slug)
     goal = get_object_or_404(Goal, id=goal_id, skill=skill)
 
     goal.done = True
@@ -114,24 +115,24 @@ def mark_goal_done(request, skill_id, goal_id):
 
     return redirect("show_undone_goals")
 
-def mark_goal_undone(request, skill_id, goal_id):
-    skill = get_object_or_404(Skill, id=skill_id)
+def mark_goal_undone(request, skill_slug:str, goal_id):
+    skill = get_object_or_404(Skill, slug=skill_slug)
     goal = get_object_or_404(Goal, id=goal_id, skill=skill)
 
     goal.done = False
     goal.save()
 
-    return redirect("goals_check", skill_id=skill.id)
+    return redirect("goals_check", slug=skill_slug)
 
-def mark_goal_archived(request, skill_id, goal_id):
-    skill = get_object_or_404(Skill, id=skill_id)
+def mark_goal_archived(request, skill_slug:str, goal_id):
+    skill = get_object_or_404(Skill, slug=skill_slug)
     goal = get_object_or_404(Goal, id=goal_id, skill=skill)
 
     if request.method == "POST":
         goal.archived = True
         goal.save()
 
-    return redirect("skill_detail", skill_id=skill.id)
+    return redirect("skill_detail", slug=skill_slug)
 
 def show_undone_goals(request):
     goals = Goal.objects.filter(done=False).select_related("skill")
@@ -141,17 +142,17 @@ def show_undone_goals(request):
     })
 
 
-def goal_delete(request, skill_id, goal_id):
-    skill = get_object_or_404(Skill, id=skill_id)
+def goal_delete(request, skill_slug:str, goal_id):
+    skill = get_object_or_404(Skill, slug=skill_slug)
     goal = get_object_or_404(Goal, id=goal_id, skill=skill)
 
     if request.method == "POST":
         goal.delete()
 
-    return redirect("goals_check", skill_id=skill.id)
+    return redirect("goals_check", slug=skill_slug)
 
-def goals_create(request, skill_id):
-    skill = get_object_or_404(Skill, id=skill_id)
+def goals_create(request, skill_slug:str):
+    skill = get_object_or_404(Skill, slug=skill_slug)
 
     if request.method == "POST":
         text = request.POST.get("text", "").strip()
@@ -170,7 +171,7 @@ def goals_create(request, skill_id):
 
             goal.save()
 
-            return redirect("skill_detail", skill_id=skill_id)
+            return redirect("skill_detail", slug=skill_slug)
 
         else:
             return render(
