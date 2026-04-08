@@ -48,7 +48,7 @@ def skill_detail(request, skill_slug:str):
 
     return render(request, "tracker/skill_detail.html", {
         "skill": skill,
-        "skill_slug": skill.slug,
+        "skill_slug": skill_slug,
         "done_goals": done_goals,
         "not_done_goals": undone_goals,
         "archive_goals": archive_goals,
@@ -65,9 +65,9 @@ def skill_edit(request, skill_slug:str):
             skill.name = name
             skill.save()
 
-        return redirect("skill_detail", slug=skill_slug)
+        return redirect("skill_detail", skill_slug=skill_slug)
 
-    return redirect("skill_detail", slug=skill_slug)
+    return redirect("skill_detail", skill_slug=skill_slug)
 
 
 def goal_detail(request, skill_slug:str, goal_id,):
@@ -90,7 +90,7 @@ def goals_check(request, skill_slug:str):
         goal_data = {
             "id": goal.id,
             "text": goal.text,
-            "skill_slug": skill.slug,
+            "skill_slug": skill_slug,
             "skill_name": skill.name,
             "skill_description": skill.description,
         }
@@ -122,7 +122,7 @@ def mark_goal_undone(request, skill_slug:str, goal_id):
     goal.done = False
     goal.save()
 
-    return redirect("goals_check", slug=skill_slug)
+    return redirect("goals_check", skill_slug=skill_slug)
 
 def mark_goal_archived(request, skill_slug:str, goal_id):
     skill = get_object_or_404(Skill, slug=skill_slug)
@@ -132,7 +132,7 @@ def mark_goal_archived(request, skill_slug:str, goal_id):
         goal.archived = True
         goal.save()
 
-    return redirect("skill_detail", slug=skill_slug)
+    return redirect("skill_detail", skill_slug=skill_slug)
 
 def show_undone_goals(request):
     goals = Goal.objects.filter(done=False).select_related("skill")
@@ -149,7 +149,7 @@ def goal_delete(request, skill_slug:str, goal_id):
     if request.method == "POST":
         goal.delete()
 
-    return redirect("goals_check", slug=skill_slug)
+    return redirect("goals_check", skill_slug=skill_slug)
 
 def goals_create(request, skill_slug:str):
     skill = get_object_or_404(Skill, slug=skill_slug)
@@ -171,7 +171,7 @@ def goals_create(request, skill_slug:str):
 
             goal.save()
 
-            return redirect("skill_detail", slug=skill_slug)
+            return redirect("skill_detail", skill_slug=skill_slug)
 
         else:
             return render(
@@ -179,7 +179,7 @@ def goals_create(request, skill_slug:str):
                 "tracker/goal_create.html",
                 {
                     "skill": skill,
-                    "skill_id": skill_id,
+                    "skill_id": skill.id,
                     "error": "Цель должна содержать минимум 3 символа",
                     "text": text,
                     "description": description,
