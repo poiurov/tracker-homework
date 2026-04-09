@@ -65,9 +65,9 @@ def skill_edit(request, skill_slug:str):
             skill.name = name
             skill.save()
 
-        return redirect("skill_detail", skill_slug=skill_slug)
+        return redirect("skill_detail", skill_slug=skill.slug)
 
-    return redirect("skill_detail", skill_slug=skill_slug)
+    return redirect("skill_detail", skill_slug=skill.slug)
 
 
 def goal_detail(request, skill_slug:str, goal_id,):
@@ -191,6 +191,6 @@ def goals_create(request, skill_slug:str):
         "tracker/goal_create.html",
         {
             "skill": skill,
-            "skill_id": skill_id,
+            "skill_slug": skill_slug,
         }
     )

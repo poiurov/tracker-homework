@@ -89,7 +89,7 @@
                 {% for skill in skills %}                <tr>
                     <td>{{ skill.rank }}</td> <!-- можно сделать динамическим -->
                     <td>
-                        <a href="{% url 'skill_detail' skill_slug %}" style="color: #e2e8f0; text-decoration: none;">
+                        <a href="{% url 'skill_detail' skill.slug %}" style="color: #e2e8f0; text-decoration: none;">
                             {{ skill.name }}
                         </a>
                     </td>
@@ -98,8 +98,8 @@
                         <strong>{{ skill.done_count }} / {{ skill.total_count }}</strong>
                     </td>
                     <td>
-                    <a href="{% url 'goal_create' skill_slug %}" class="action-btn">+</a>
-                    <a href="{% url 'skill_detail' skill_slug %}" class="action-btn">список</a>
+                    <a href="{% url 'goal_create' skill.slug %}" class="action-btn">+</a>
+                    <a href="{% url 'skill_detail' skill.slug %}" class="action-btn">список</a>
                     </td>
                 </tr>
                 {% endfor %}

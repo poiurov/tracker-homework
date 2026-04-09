@@ -79,7 +79,7 @@ class UrlsTestCase(TestCase):
     def test_skill_edit_url_opens(self):
         response = self.client.get(
             reverse("skill_edit", kwargs={"skill_slug": self.skill.slug})        )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_show_undone_goals_url_opens(self):
         response = self.client.get(reverse("show_undone_goals"))

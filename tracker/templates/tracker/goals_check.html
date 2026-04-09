@@ -33,12 +33,12 @@
 
     <div class="skill">
         Навык:
-        <a href="/skill/{{ goal.skill_slug }}/"  style="color: #38bdf8;">
+        <a href="/skill/{{ goal.skill.slug }}/"  style="color: #38bdf8;">
             {{ goal.skill_name }}
         </a>
     </div>
 
-    <a href="{% url 'goal_undone' goal.skill_slug goal.id %}"  style="color: #22c55e;">
+    <a href="{% url 'goal_undone' goal.skill.slug goal.id %}"  style="color: #22c55e;">
         ↩ Снять выполнение
     </a>
 </li>
@@ -58,7 +58,7 @@
     <li>
     <div>
     {{ goal.text }}
-    <form action="{% url 'goal_delete' goal.skill_slug goal.id %}" method="post" style="display:inline;">
+    <form action="{% url 'goal_delete' goal.skill.slug goal.id %}" method="post" style="display:inline;">
     {% csrf_token %}
         <button type="submit" style="background: none; border: none; cursor: pointer;">
         ❌
@@ -68,12 +68,12 @@
 
     <div class="skill">S
         Навык:
-        <a href="/skill/{{ goal.skill_slug }}/" style="color: #38bdf8;">
+        <a href="/skill/{{ goal.skill.slug }}/" style="color: #38bdf8;">
             {{ goal.skill_name }}
         </a>
     </div>
 
-    <a href="{% url 'goal_done' goal.skill_slug goal.id %}" style="color: #22c55e;">
+    <a href="{% url 'goal_done' goal.skill.slug goal.id %}" style="color: #22c55e;">
         ✔ Отметить выполненной
     </a>
 </li>
